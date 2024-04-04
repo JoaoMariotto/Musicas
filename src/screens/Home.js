@@ -9,6 +9,9 @@ export default function Home({navigation}) {
     title: "Highway to hell",
     group: "AC/DC",
     album_image: "https://m.media-amazon.com/images/I/711Hf7rJhFL._UF1000,1000_QL80_.jpg",
+    album: "Highway to Hell",
+    year: 1970,
+    genre: "Heavy Metal",
   }
   return (
     <View style={styles.container}>
