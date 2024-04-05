@@ -1,29 +1,40 @@
-import React, {useState} from "react";
-import { View, Text, StyleSheet, StatusBar } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, StatusBar, FlatList } from "react-native";
 import MusicItem from "../components/MusicItem";
 
-export default function Home({navigation}) {
+export default function Home({ navigation }) {
   const [currentPlaying, setCurrentPlaying] = useState(null);
-  const item = {
-    id: '1',
-    title: "Highway to hell",
-    group: "AC/DC",
-    album_image: "https://m.media-amazon.com/images/I/711Hf7rJhFL._UF1000,1000_QL80_.jpg",
-    album: "Highway to Hell",
-    year: 1970,
-    genre: "Heavy Metal",
-  }
+  const [musicData, setMusicData] = useState([]);
+
+  useEffect(() => {
+    fetch("http://10.0.2.2:3000/musics")
+      .then((response) => response.json())
+      .then((data) => setMusicData(data));
+  }, []);
+
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#121212"/>
+      <StatusBar barStyle="light-content" backgroundColor="#121212" />
       <Text style={styles.title}>Minhas músicas</Text>
-      <MusicItem isPlaying={() => currentPlaying == item.id} music={item} navigation={navigation} onPlayPause={() => {}}/>
+
+      <FlatList
+        data={musicData}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <MusicItem
+            isPlaying={() => currentPlaying == item.id}
+            music={item}
+            navigation={navigation}
+            onPlayPause={() => { }}
+          />
+        )}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     flex: 1,
     backgroundColor: "#121212",
     paddingTop: 16,
